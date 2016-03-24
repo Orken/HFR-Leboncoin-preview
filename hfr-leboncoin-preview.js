@@ -3,6 +3,8 @@
 // @version 0.1.1 
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
+// @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.js
+// @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.js
 // @include http://forum.hardware.fr/* 
 // @grant GM_xmlhttpRequest 
 // ==/UserScript== 
