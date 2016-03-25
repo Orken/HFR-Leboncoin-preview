@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.2
+// @version 0.1.3
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -31,13 +31,83 @@ function loading(element) {
  
 var base = document.getElementById('mesdiscussions'); 
 var links = $x('//a[@class="cLink"]',base); 
+var createRow = function (titre, content) {
+    var row = document.createElement('tr');
+    var tdtitre = document.createElement('td');
+    tdtitre.style.backgroundColor = '#f0f0f0';
+    tdtitre.style.padding = '7px 5px';
+    tdtitre.innerHTML = titre;
+    var tdcontent = document.createElement('td');
+    tdcontent.style.backgroundColor = '#f0f0f0';
+    tdcontent.innerHTML = content;
+    tdcontent.style.padding = '7px 5px';
+    row.appendChild(tdtitre);
+    row.appendChild(tdcontent);
+    return row;
+};
+
+var emptyElement = function (element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+};
+
+var generateGallery = function (thumbs) {
+    if (thumbs && thumbs.length) { 
+        var gallery = document.createElement('div');
+        gallery.style.textAlign = 'center';
+        gallery.style.backgroundColor = 'white';
+        var length = thumbs.length; 
+        var width = 390 - Math.min(length,3) * 6;
+        for (i=0;i<length;i++) { 
+            var img = new Image();
+            img.src = thumbs[i];
+            img.style.maxHeight = '300px';
+            img.style.maxWidth = (width / Math.min(length,3) ) + 'px';
+            img.style.margin = '3px';
+            gallery.appendChild(img);
+        } 
+        return gallery; 
+    } 
+};
+
+var display = function (titre, description, thumbs, price, address) {
+    var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    var content = document.createElement('div');
+    var header = document.createElement('h1');
+    header.style.margin = 0;
+    header.style.padding = '5px';
+    header.style.fontSize = '1.5em';
+    header.style.backgroundColor = '#f56b2a';
+    header.style.color = 'white';
+    header.innerHTML = titre;
+    content.appendChild(header);
+    
+    if (thumbs) content.appendChild(generateGallery(thumbs));
+    
+    var body = document.createElement('div');
+    body.innerHTML = description;
+    body.style.padding = '10px';
+    content.appendChild(body);
+    
+    if ( price || address ) {
+        var footer = document.createElement('table');
+        footer.style.backgroundColor = 'white';
+        footer.style.width = '100%';
+        if (price) footer.appendChild(createRow('Prix',price + ' €'));
+        if (address) footer.appendChild(createRow('Lieu',address));
+        content.appendChild(footer);
+    }
+    console.log(titre,header,content);
+    return content;
+};
  
 links.filter(testLinkToLBC).forEach(function(link) { 
     var container; 
     var loadingText; 
     var img; 
     var bePatient; 
-     
+    
     link.addEventListener('mouseover',function() { 
         loadingText = document.createElement('p'); 
         loadingText.style.marginLeft = '50px'; 
@@ -45,14 +115,13 @@ links.filter(testLinkToLBC).forEach(function(link) {
         loadingText.style.fontWeight = 'bold'; 
         loadingText.style.textAlign = 'center'; 
         loadingText.innerHTML = "Chargement en cours..."; 
-         
         bePatient = loading(loadingText); 
-         
+
         container = document.createElement('div'); 
         container.style.position = "absolute"; 
-        container.style.background = "#f0f0f0"; 
+        container.style.background = "#fff"; 
         container.style.width = "400px"; 
-        container.style.padding = "8px"; 
+        container.style.padding = "0px";
         container.style.border = 'solid 2px #f56b2a'; 
         container.style.top = window.scrollY+10+"px"; 
         container.style.right = "10px"; 
@@ -66,45 +135,31 @@ links.filter(testLinkToLBC).forEach(function(link) {
                 url: url, 
                 onload: function(response) 
                 { 
+                    emptyElement(container);
                     var texte = response.responseText; 
-                    var inactive = /adviewDisabled/.test(texte); 
+                    var adviewDisabled = /adviewDisabled/.test(texte); 
                     var html =''; 
-                    if (inactive) { 
-                        html+='<h1 style="text-align:center">Cette annonce est d&eacute;sactiv&eacute;e</h1>'; 
+                    if (adviewDisabled) {
+                        var inactive = document.createElement('h1');
+                        inactive.style.textAlign = 'center';
+                        inactive.innerHTML = 'Cette annonce est d&eacute;sactiv&eacute;e';
+                        container.appendChild(inactive);
                     } else { 
                         var text = texte.match(/itemprop="description">(.*)<\/p>/); 
                         var titre = texte.match(/<h1 class="no-border">([^]*)<\/h1>/); 
                         var thumbs = texte.match(/(\/\/img.*thumbs.*\.jpg)/g); 
                         var price = texte.match(/itemprop="price" content="(.*)"/); 
                         var address = texte.match(/PostalAddress">(.*)/); 
-                        html = '<h1 style="font-size:1.5em;background-color:#f56b2a;color:white;margin:0 0 10px 0;padding:5px;">' + titre[1] + '</h1>'; 
-                        if (thumbs) { 
-                            html+='<div style="text-align:center;background-color:#fff">'; 
-                            var length = thumbs.length; 
-                            for (i=0;i<length;i++) { 
-                                html+= "<img src=\""+thumbs[i]+"\" style=\"max-height:300px;max-width:" + (390/length) + "px\"> "; 
-                            } 
-                            html+='</div>'; 
-                        } 
-                        html+="<h3>Description :</h3><p>" + text[1] + '</p>'; 
-                        if (price) { 
-                            html+= '<div style="background-color:white;padding:3px;border:solid 1px #f6f6f6">Prix : <span style="color:#f56b2a;font-size:1.2em;font-weight:bold">'+price[1] + ' €</span></div>'; 
-                        } 
-                        if (address) { 
-                            html+= '<div style="background-color:white;padding:3px;border:solid 1px #f6f6f6">Lieu : '+ address[1] + '</div>'; 
-                        } 
+                        container.appendChild(display(titre[1], text[1], thumbs, price[1], address[1]));
                     } 
-                    container.innerHTML = html; 
                     clearInterval(bePatient); 
                 } 
             }); 
- 
-    },false); 
+     },false); 
      
     link.addEventListener('mouseout',function() { 
         if(container) { 
             container.parentNode.removeChild(container); 
         } 
- 
     },false); 
 });
