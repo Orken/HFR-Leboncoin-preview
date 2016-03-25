@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.2
+// @version 0.1.4
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -12,13 +12,6 @@
 // @icon http://lbc2rss.superfetatoire.com/webroot/img/icon.png
 // @grant GM_xmlhttpRequest 
 // ==/UserScript== 
-
-function $x(p, context) { 
-  if (!context) context = document; 
-  var i, arr = [], xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null); 
-  for (i = 0; item = xpr.snapshotItem(i); i++) arr.push(item); 
-  return arr; 
-} 
  
 function testLinkToLBC(link) { 
     return link.href.match(/www.leboncoin.fr/i); 
@@ -32,9 +25,10 @@ function loading(element) {
         element.innerHTML ="Chargement en cours" + dyn; 
     },500); 
 } 
- 
-var base = document.getElementById('mesdiscussions'); 
-var links = $x('//a[@class="cLink"]',base); 
+
+var filter   = Array.prototype.filter;
+var links = filter.call( document.querySelectorAll('#mesdiscussions a.cLink') , testLinkToLBC );
+
 var createRow = function (titre, content) {
     var row = document.createElement('tr');
     var tdtitre = document.createElement('td');
