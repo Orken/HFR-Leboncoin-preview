@@ -6,6 +6,7 @@
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @include http://forum.hardware.fr/* 
+// @icon http://lbc2rss.superfetatoire.com/webroot/img/icon.png
 // @grant GM_xmlhttpRequest 
 // ==/UserScript== 
  
