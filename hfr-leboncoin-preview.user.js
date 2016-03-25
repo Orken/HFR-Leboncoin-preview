@@ -1,15 +1,16 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.3
+// @version 0.1.2
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @include http://forum.hardware.fr/* 
+// @author Orken | Mr Marron Derriere
 // @icon http://lbc2rss.superfetatoire.com/webroot/img/icon.png
 // @grant GM_xmlhttpRequest 
 // ==/UserScript== 
- 
+
 function $x(p, context) { 
   if (!context) context = document; 
   var i, arr = [], xpr = document.evaluate(p, context, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null); 
