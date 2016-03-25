@@ -60,7 +60,7 @@ var generateGallery = function (thumbs) {
         for (i=0;i<length;i++) { 
             var img = new Image();
             img.src = thumbs[i];
-            img.style.maxHeight = '300px';
+            img.style.maxHeight = '120px';
             img.style.maxWidth = (width / Math.min(length,3) ) + 'px';
             img.style.margin = '3px';
             gallery.appendChild(img);
@@ -96,7 +96,6 @@ var display = function (titre, description, thumbs, price, address) {
         if (address) footer.appendChild(createRow('Lieu',address));
         content.appendChild(footer);
     }
-    console.log(titre,header,content);
     return content;
 };
  
