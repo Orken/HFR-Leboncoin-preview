@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.6
+// @version 0.1.7
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -87,6 +87,13 @@ var display = function (titre, description, thumbs, price, address) {
     var body = document.createElement('div');
     body.innerHTML = description;
     body.style.padding = '10px';
+    /* 
+      Calcul arbitraire pour que les annonces avec beaucoup de texte
+      s'affiche sur la page correctement.
+      A faire : calculer le décalage suivant les élements présents dans la page.
+    */
+    body.style.maxHeight = (height - 400) + 'px';
+    body.style.overflow = 'hidden';
     content.appendChild(body);
     
     if ( price || address ) {
