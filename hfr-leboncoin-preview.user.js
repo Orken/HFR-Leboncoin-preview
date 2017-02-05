@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.7
+// @version 0.1.8
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -157,8 +157,8 @@ links.forEach(function(link) {
                         container.appendChild(inactive);
                     } else { 
                         var text = texte.match(/itemprop="description">(.*)<\/p>/); 
-                        var titre = texte.match(/<h1 class="no-border">([^]*)<\/h1>/); 
-                        var thumbs = texte.match(/(\/\/img.*thumbs.*\.jpg)/g); 
+                        var titre = texte.match(/itemprop="name">([^]*)<\/h1>/); 
+                        var thumbs = texte.match(/(\/\/img[0-9].leboncoin.fr\/ad-thumb\/.*\.jpg)/g); 
                         if (!thumbs) {
                             var image = texte.match(/itemprop="image" content="(.*)"/);
                             if (image) {
@@ -166,7 +166,7 @@ links.forEach(function(link) {
                             }
                         }
                         var price = texte.match(/itemprop="price" content="(.*)"/); 
-                        var address = texte.match(/PostalAddress">(.*)/); 
+                        var address = texte.match(/itemprop="address">(.*)/); 
                         container.appendChild(display(titre[1], text[1], thumbs, price[1], address[1]));
                     } 
                     clearInterval(bePatient); 
