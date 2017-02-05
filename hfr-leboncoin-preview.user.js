@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.8
+// @version 0.1.81
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -162,7 +162,7 @@ links.forEach(function(link) {
                         if (!thumbs) {
                             var image = texte.match(/itemprop="image" content="(.*)"/);
                             if (image) {
-                                thumbs = new Array(image[1].replace('images','thumbs'));
+                                thumbs = new Array(image[1].replace('image','thumb'));
                             }
                         }
                         var price = texte.match(/itemprop="price" content="(.*)"/); 
