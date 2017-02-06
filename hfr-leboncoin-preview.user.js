@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.85
+// @version 0.2.0
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -151,6 +151,8 @@ links.forEach(function(link) {
                     var texte = response.responseText; 
                     var adviewDisabled = /adviewDisabled/.test(texte); 
                     if (adviewDisabled) {
+                        link.style.textDecoration = "line-through";
+                        link.style.color = '#666';
                         var inactive = document.createElement('h1');
                         inactive.style.textAlign = 'center';
                         inactive.innerHTML = 'Cette annonce est d&eacute;sactiv&eacute;e';
