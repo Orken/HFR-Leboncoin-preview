@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview 
-// @version 0.1.81
+// @version 0.1.85
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -61,9 +61,9 @@ var generateGallery = function (thumbs) {
         for (i=0;i<length;i++) { 
             var img = new Image();
             img.src = thumbs[i];
-            img.style.maxHeight = '120px';
-            img.style.maxWidth = (width / Math.min(length,3) ) + 'px';
-            img.style.margin = '3px';
+            //img.style.maxHeight = '120px';
+            img.style.maxWidth = '400px'; // (width / Math.min(length,3) ) + 'px';
+            img.style.margin = '0px';
             gallery.appendChild(img);
         } 
         return gallery; 
@@ -73,9 +73,9 @@ var generateGallery = function (thumbs) {
 var display = function (titre, description, thumbs, price, address) {
     var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     var content = document.createElement('div');
-    var header = document.createElement('h1');
+    var header = document.createElement('div');
     header.style.margin = 0;
-    header.style.padding = '5px';
+    header.style.padding = '15px 10px';
     header.style.fontSize = '1.5em';
     header.style.backgroundColor = '#f56b2a';
     header.style.color = 'white';
@@ -98,7 +98,7 @@ var display = function (titre, description, thumbs, price, address) {
     
     if ( price || address ) {
         var footer = document.createElement('table');
-        footer.style.backgroundColor = 'white';
+        footer.style.backgroundColor = '#f0f0f0';
         footer.style.width = '100%';
         if (price) footer.appendChild(createRow('Prix',price + ' €'));
         if (address) footer.appendChild(createRow('Lieu',address));
@@ -134,10 +134,10 @@ links.forEach(function(link) {
         container.style.width = "400px";
         container.style.minHeight = '175px';
         container.style.padding = "0px";
-        container.style.border = 'solid 2px #f56b2a'; 
+        container.style.border = 'solid 1px #f0f0f0'; 
         container.style.top = window.scrollY+10+"px"; 
         container.style.right = "10px"; 
-        container.style.fontFamily = 'sans-serif'; 
+        container.style.fontFamily = 'Roboto, sans-serif'; 
          
         document.body.appendChild(container); 
         container.appendChild(loadingText); 
@@ -158,13 +158,14 @@ links.forEach(function(link) {
                     } else { 
                         var text = texte.match(/itemprop="description">(.*)<\/p>/); 
                         var titre = texte.match(/itemprop="name">([^]*)<\/h1>/); 
-                        var thumbs = texte.match(/(\/\/img[0-9].leboncoin.fr\/ad-thumb\/.*\.jpg)/g); 
-                        if (!thumbs) {
-                            var image = texte.match(/itemprop="image" content="(.*)"/);
+                        var thumbs = [];
+                        /* var thumbs = texte.match(/(\/\/img[0-9].leboncoin.fr\/ad-thumb\/.*\.jpg)/g); 
+                        if (!thumbs) { */
+                            var image = texte.match(/data-popin-content="(.*?)"/);
                             if (image) {
-                                thumbs = new Array(image[1].replace('image','thumb'));
+                                thumbs = new Array(image[1]); //.replace('image','thumb'));
                             }
-                        }
+                        /* } */
                         var price = texte.match(/itemprop="price" content="(.*)"/); 
                         var address = texte.match(/itemprop="address">(.*)/); 
                         container.appendChild(display(titre[1], text[1], thumbs, price[1], address[1]));
