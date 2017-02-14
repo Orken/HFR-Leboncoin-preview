@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview inline
-// @version 0.1.0
+// @version 0.1.1
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin dans la page
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview-inline.user.js
@@ -86,8 +86,9 @@ var display = function (titre, url, thumbs, price, address,date) {
     var content = document.createElement('div');
     content.style.margin = '10px 0 0 0';
     content.style.padding = 0;
-    content.style.borderLeft = 'solid 5px orange';
-    content.style.borderRight = 'solid 5px orange';
+    content.style.borderLeft = 'solid 15px #f56b2a';
+    content.style.borderRight = 'solid 15px #f56b2a';
+    content.style.borderRadius = '15px';
     content.style.backgroundColor = '#f0f0f0';
     
     if (thumbs) content.appendChild(generateGallery(thumbs));
