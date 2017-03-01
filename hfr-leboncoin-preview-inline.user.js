@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview inline
-// @version 0.1.1
+// @version 0.1.5
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin dans la page
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview-inline.user.js
@@ -35,26 +35,22 @@ var createTitle = function (title,url) {
     p.href = url;
     p.target = "_blank";
     p.style.color = '#369';
-    p.style.fontSize = '1.6em';
+    p.style.fontSize = '1.2em';
     p.innerHTML = title;
     p.style.margin = "0";
     return p;
 };
 
 var createDate = function (date) {
-    var p = document.createElement('p');
-    p.style.color = '#999';
-    p.style.fontSize = '0.8em';
-    p.style.fontWeight = 'italic';
-    p.style.textAlign = "right";
-    p.innerHTML = date;
-    p.style.margin = 0;
-    return p;
+    var el = document.createElement('div');
+    el.innerHTML = date; 
+    el.classList.add('edited');
+    return el;
 };
 var createPrice = function (price) {
     var p = document.createElement('p');
     p.style.color = '#f56b2a';
-    p.style.fontSize = '1.6em';
+    p.style.fontSize = '1.5em';
     p.style.fontWeight = 'bold';
     p.innerHTML = price + " &euro;";
     p.style.margin = "1rem 0 0 0";
@@ -83,13 +79,28 @@ var generateGallery = function (thumbs) {
 
 var display = function (titre, url, thumbs, price, address,date) {
     var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    var content = document.createElement('div');
-    content.style.margin = '10px 0 0 0';
+    var container = document.createElement('div');
+    container.classList.add('container');
+    var table = document.createElement('table');
+    var tr = table.insertRow(0);
+    tr.classList.add('none');
+    var td = tr.insertCell(0);
+    var b = document.createElement('b');
+    b.classList.add('s1');
+    var a = document.createElement('a');
+    a.href = url;
+    a.innerHTML = 'Leboncoin à écrit :';
+    a.classList.add('Topic');
+    b.appendChild(a);
+    td.appendChild(b);
+    td.appendChild(document.createElement('br'));
+    td.appendChild(document.createElement('br'));
+    table.classList.add('citation');
+    table.style.borderColor = 'rgba(245, 107, 42, 0.5)';
+    container.appendChild(table);
+    
+    var content = document.createElement('p');
     content.style.padding = 0;
-    content.style.borderLeft = 'solid 15px #f56b2a';
-    content.style.borderRight = 'solid 15px #f56b2a';
-    content.style.borderRadius = '15px';
-    content.style.backgroundColor = '#f0f0f0';
     
     if (thumbs) content.appendChild(generateGallery(thumbs));
     
@@ -107,7 +118,8 @@ var display = function (titre, url, thumbs, price, address,date) {
     var clear = document.createElement('div');
     clear.style.clear = 'both';
     content.appendChild(clear);
-    return content;
+    td.appendChild(content);
+    return container;
 };
 
 var insertAfter = function (newNode, referenceNode) {
