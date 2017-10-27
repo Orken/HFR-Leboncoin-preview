@@ -7,7 +7,7 @@
 // @supportURL https://github.com/Orken/HFR-Leboncoin-preview/issues
 // @include http*://www.leboncoin.fr/*
 // @homepage https://github.com/Orken/HFR-Leboncoin-preview
-// @author Orken | Mr Marron Derriere | Gduval91
+// @author Orken | Mr Marron Derriere | MisterDuval
 // @grant GM_addStyle
 // @grant unsafeWindow
 // ==/UserScript==
