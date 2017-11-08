@@ -1,5 +1,5 @@
 // ==UserScript== 
-// @name [HFR] Leboncoin preview 
+// @name [HFR] Leboncoin preview for forum.hardware.fr
 // @version 0.2.0
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview 
@@ -7,6 +7,7 @@
 // @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @supportURL https://github.com/Orken/HFR-Leboncoin-preview/issues
 // @include http://forum.hardware.fr/* 
+// @include http*://www.leboncoin.fr/* 
 // @homepage https://github.com/Orken/HFR-Leboncoin-preview
 // @author Orken | Mr Marron Derriere
 // @icon http://lbc2rss.superfetatoire.com/webroot/img/icon.png
