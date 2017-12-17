@@ -1,6 +1,6 @@
 // ==UserScript== 
 // @name [HFR] Leboncoin preview inline
-// @version 0.1.5
+// @version 0.1.6
 // @namespace http://lbc2rss.superfetatoire.com/ 
 // @description Permet de voir une preview des annonces leboncoin dans la page
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview-inline.user.js
