@@ -6,7 +6,7 @@
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview-inline.user.js
 // @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview-inline.user.js
 // @supportURL https://github.com/Orken/HFR-Leboncoin-preview-inline/issues
-// @include http://forum.hardware.fr/* 
+// @include http*://forum.hardware.fr/* 
 // @homepage https://github.com/Orken/HFR-Leboncoin-preview-inline
 // @author Orken | Mr Marron Derriere
 // @icon http://lbc2rss.superfetatoire.com/webroot/img/icon.png
