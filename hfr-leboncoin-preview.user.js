@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Leboncoin preview
-// @version 0.4.1
+// @version 0.5
 // @description Permet de voir une preview des annonces leboncoin, inspiré de [HFR] Image quote preview
 // @updateURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
 // @downloadURL https://raw.githubusercontent.com/Orken/HFR-Leboncoin-preview/master/hfr-leboncoin-preview.user.js
@@ -8,10 +8,11 @@
 // @include http*://www.leboncoin.fr/*
 // @homepage https://github.com/Orken/HFR-Leboncoin-preview
 // @author Orken | Mr Marron Derriere | MisterDuval
+// @require https://code.jquery.com/jquery-2.1.4.min.js
 // @grant GM_addStyle
 // @grant unsafeWindow
 // ==/UserScript==
-
+var $ = window.jQuery;
 var css = '#loader-wrapper{position:relative;top:10px;left:0;width:100%;height:100%;z-index:1000}#loader-wrapper p{position:absolute;text-align:center;left:0;right:0;color:#666;line-height:30px;top:50%;margin-top:-15px;font-size:30px}#loader{display:block;position:relative;left:50%;top:50%;width:150px;height:150px;margin:0 0 0 -75px;border-radius:50%;border:3px solid transparent;border-top-color:#f56b2a;-webkit-animation:spin 1.5s linear infinite;animation:spin 1.5s linear infinite}#loader:before{content:"";position:absolute;top:5px;left:5px;right:5px;bottom:5px;border-radius:50%;border:3px solid transparent;border-top-color:#4183d7;-webkit-animation:spin 2s linear infinite;animation:spin 2s linear infinite}#loader:after{content:"";position:absolute;top:15px;left:15px;right:15px;bottom:15px;border-radius:50%;border:3px solid transparent;border-top-color:#ccc;-webkit-animation:spin 1s linear infinite;animation:spin 1s linear infinite}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);-ms-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);-ms-transform:rotate(360deg);transform:rotate(360deg)}}';
 var links;
 
@@ -27,7 +28,7 @@ var generateGallery = function (thumbs) {
         gallery.style.backgroundColor = 'white';
         var length = thumbs.length;
         var width = 390 - Math.min(length,1) * 6;
-        for (i=1;i<Math.min(2,length);i++) {
+        for (var i=1;i<Math.min(2,length);i++) {
             var img = new Image();
             img.src = thumbs[i];
             //img.style.maxHeight = '120px';
@@ -65,8 +66,10 @@ var display = function (description, thumbs, tableElements) {
 GM_addStyle(css);
 
 var previewLBC = function() {
-    links = Array.prototype.filter.call( document.querySelectorAll('.tabsContent li a') , testLinkToLBC );
+    links = Array.prototype.filter.call( document.querySelectorAll('[role="tabpanel"] a.trackable') , testLinkToLBC );
+
     links.forEach(function(link) {
+        console.log(link);
         var $container;
         var $link = $(link);
 
@@ -74,8 +77,8 @@ var previewLBC = function() {
         $link.attr('target', '_blank');
 
         $link
-            .find('.item_image')
-            .append('<span class="item_imageNumber item_preview" style="margin-left:25px;"><i class="icon-info icon-2x nomargin"></i></span>');
+            //.find('.item_image')
+            .append('<span class="item_imageNumber item_preview" style="padding:1.5em;z-index:10000;position:absolute;top:16px;left:93%;"><svg height="32" width="32" viewBox="0 0 32 32"><path d="M16 25.718L25.888 32l-2.624-11.84L32 12.194l-11.504-1.045L16 0l-4.496 11.15L0 12.193l8.72 7.966L6.112 32 16 25.718z" fill="#000"></path></svg></span>');
 
         $link.on('mouseout',function() {
             if ($container) {
@@ -84,7 +87,7 @@ var previewLBC = function() {
         });
 
         $link
-            .find('.item_image .item_preview')
+            //.find('[itemprop="image"]')
             .on('mouseover', function() {
 
                 $container = $('<div style="z-index:10000;position:absolute;background:#fff;width:400px;min-height:175px;padding:0;border:1px solid #f0f0f0;right:10px;font-family:Roboto,sans-serif;">');
